@@ -69,325 +69,37 @@
 
     <script>
 
-        const partsData = [
-            // Transmisión
-            {
-                category: "Transmisión",
-                name: "Piñón",
-                description: "Compatible con Honda CG Titan 150 o Honda Bross.",
-            },
-            {
-                category: "Transmisión",
-                name: "Corona",
-                description: "Compatible con Corven Skua 150",
-            },
-            {   category: "Transmisión", 
-                name: "Cadena", 
-                description: "Medida Paso 428." },
-            {
-                category: "Transmisión",
-                name: "Eje de Transmisión",
-                description: "Compatible con Honda CG Titan 150.",
-            },
-            {
-                category: "Transmisión",
-                name: "Tensor de Cadena",
-                description: "Compatible con Skua 150",
-            },
-            {
-                category: "Transmisión",
-                name: "Reten de Transmisión",
-                description: "Modelo: TC 20 34 7 70.",
-            },
-            {
-                category: "Transmisión",
-                name: "Manchones",
-                description: "Compatible con Corven Skua.",
-            },
+            // 1. Reemplaza la URL con la que copiaste de Google Apps Script
+    const API_URL = "https://script.google.com/macros/s/AKfycbwP4fdr2vxjRIEfh_hLh7G5h_1dA0EFQ8VbbXnildVQk1M1IdLP2HsOJv_Ei-4-7G1OYQ/exec";
 
-            // Motor y Carburación
-            {
-                category: "Motor y Carburación",
-                name: "Kit de Carburador",
-                description: "Compatible con Honda Storm.",
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Bujia",
-                description: 'Modelos "B8RTC" en Torch, "CPR8EA-9" en NGK.',
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Filtro de Aire",
-                description: 'Actualmente no se consigue el original, pero la empresa BMB tiene a la venta filtros de alto flujo compatibles con la Nomad. En breve estarán agregados a mi canal de youtube con su review.',
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Estrella Selectora Cambios",
-                description: "Compatible con Zanella Rx 150cc",
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Brazo Selector Cambios.",
-                description: "Compatibles con Motomel S2.",
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Caño de Escape",
-                description: "Compatible con curvatura de Honda XR150L.",
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Discos de embrague.",
-                description: "Compatible con CG Titan 150, Honda Storm, CB150.",
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Canasta de embrague.",
-                description: "Compatible con CG Titan 150, Honda Storm, CB150.",
-            },
-            {
-                category: "Motor y Carburación",
-                name: "Valvulas.",
-                description: "Compatible con CG Titan 150.",
-            },
+    let partsData = []; // Ahora empieza vacío
+    let activeCategory = "Todos";
 
-            // Chasis y Dirección
-            {
-                category: "Chasis y Dirección",
-                name: "Cristo Superior",
-                description: "Compatible con Honda XR 150 (2013), Sahel, ZR y Skua.",
-            },
-            {
-                category: "Chasis y Dirección",
-                name: "Barrales delanteros",
-                description: "Generico. Compatible con Gilera Sahel 150cc.",
-            },
-            {
-                category: "Chasis y Dirección",
-                name: "Cubeta de dirección",
-                description: "Compatible con Skua V6 150cc.",
-            },
-            {
-                category: "Chasis y Dirección",
-                name: "Manubrio",
-                description: "Genérico, compatible con Honda Tornado, Skua, ZR.",
-            },
-            {
-                category: "Chasis y Dirección",
-                name: "Pedalines Posa Pie",
-                description: "Compatibles con Honda Tornado 250cc",
-            },
+    const partsGrid = document.getElementById("parts-grid");
+    const searchInput = document.getElementById("search-input");
+    const categoryFiltersContainer = document.getElementById("category-filters");
 
-            // Frenos
-            {
-                category: "Frenos",
-                name: "Pastillas de Freno Trasero",
-                description: "Compatibles con Gilera SMX 200, Honda invicta, Guerrero Tundra 200, Honda Tornado y Yamaha FZ.",
-            },
-            {
-                category: "Frenos",
-                name: "Disco de Freno Trasero",
-                description: "Compatibles con Skua.",
-            },
-            {
-                category: "Frenos",
-                name: "Pastillas de Freno Delantero",
-                description: "Compatibles con Gilera Smash.",
-            },
-            {
-                category: "Frenos",
-                name: "Liquido de frenos.",
-                description: "Tipo Dot 4.",
-            },
-
-            // Sistema Eléctrico
-            {
-                category: "Sistema Eléctrico",
-                name: "Cerradura o Tambor de Ignición",
-                description: "Genérico, compatible con ZR, Skua, Hunter.",
-            },
-            {
-                category: "Sistema Eléctrico",
-                name: "Fusibles",
-                description: "Número 15.",
-            },
-            {
-                category: "Sistema Eléctrico",
-                name: "Sensor Pie Muleta",
-                description: "Compatible con Zanella Styler 150.",
-            },
-            {
-                category: "Sistema Eléctrico",
-                name: "Foco Delantero",
-                description: "Modelo H4 (halógeno o LED).",
-            },
-            {
-                category: "Sistema Eléctrico",
-                name: "Batería",
-                description: "Modelo: MTX7L-RS 12V 6Ah(10HR).",
-            },
-            {
-                category: "Sistema Eléctrico",
-                name: "Bulbo freno delantero.",
-                description: "Compatibles con Honda Titan 160.",
-            },
-
-            // Ruedas
-            {
-                category: "Ruedas",
-                name: "Rueda Trasera",
-                description: "Medida 110/90-17.",
-            },
-            {
-                category: "Ruedas",
-                name: "Llanta estándar trasera",
-                description: "Medida 2.50.",
-            },
-            {
-                category: "Ruedas",
-                name: "Ruleman rueda trasera",
-                description: "Medida: 6204-RS",
-            },
-            {
-                category: "Ruedas",
-                name: "Rueda Delantera",
-                description: "Medida 90/90-19.",
-            },
-            {
-                category: "Ruedas",
-                name: "Llanta estándar delantera",
-                description: "Medida 2.15.",
-            },
-            {
-                category: "Ruedas",
-                name: "Maza Rueda Trasera",
-                description: "Compatible con Skua.",
-            },
-            {
-                category: "Ruedas",
-                name: "Eje de horquillon",
-                description: "Compatible con Skua.",
-            },
-
-            // Otros
-            {
-                category: "Otros",
-                name: "Caballete",
-                description: "Genérico, compatible con Honda XR150L",
-            },
-            {
-                category: "Otros",
-                name: "Cable de Embrague",
-                description: "Genérico, compatible con Skua u Honda XR.",
-            },
-            {
-                category: "Otros",
-                name: "Cable de acelerador",
-                description: "Genérico, IMPORTANTE: en motos 2024 aún no tengo info, en las 2025 es de skua 150.",
-            },
-            {
-                category: "Otros",
-                name: "Manija de Embrague",
-                description: "Genérico, compatible con Honda Cometa, Skua, Honda Titan.",
-            },
-            {
-                category: "Otros",
-                name: "Manija de Freno",
-                description: "Genérico, compatible con Honda Cometa y Honda GLH.",
-            }, 
-            {
-                category: "Otros",
-                name: "Pedal de Cambio",
-                description: "Genérico, compatible con casi cualquier moto, por ejemplo: XTZ, XR, ZR, Skua, Sahel, *adjunte mil modelos más*",
-            },
-            {
-                category: "Otros",
-                name: "Espejos",
-                description: "Compatibles con casi todos los espejos, pero los de fabrica son Haojue NK 150.",
-            },
-        ];
-        const partsGrid = document.getElementById("parts-grid");
-        const searchInput = document.getElementById("search-input");
-        const categoryFiltersContainer =
-            document.getElementById("category-filters");
-
-        let activeCategory = "Todos";
-
-        function renderParts(filteredParts) {
-            partsGrid.innerHTML = "";
-            if (filteredParts.length === 0) {
-                partsGrid.innerHTML = `<div class="col-span-full text-center py-10">
-                    <p class="text-slate-500 text-lg">No se encontraron repuestos que coincidan con la búsqueda.</p>
-                </div>`;
-                return;
-            }
-            filteredParts.forEach((part) => {
-                const partCard = document.createElement("div");
-                partCard.className =
-                    "part-card bg-white rounded-xl shadow-md p-5 flex flex-col";
-                partCard.innerHTML = `
-                    <span class="text-xs font-semibold text-sky-600 bg-sky-100 px-2 py-1 rounded-full self-start">${part.category}</span>
-                    <h3 class="font-bold text-xl text-slate-900 mt-3">${part.name}</h3>
-                    <p class="text-slate-600 mt-2 flex-grow">${part.description}</p>
-                `;
-                partsGrid.appendChild(partCard);
-            });
-        }
-
-        function filterAndRender() {
-            let filtered = partsData;
-
-            if (activeCategory !== "Todos") {
-                filtered = filtered.filter((part) => part.category === activeCategory);
-            }
-
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            if (searchTerm) {
-                filtered = filtered.filter(
-                    (part) =>
-                        part.name.toLowerCase().includes(searchTerm) ||
-                        part.description.toLowerCase().includes(searchTerm) ||
-                        part.category.toLowerCase().includes(searchTerm)
-                );
-            }
-
-            renderParts(filtered);
-        }
-
-        function createCategoryFilters() {
-            const categories = [
-                "Todos",
-                ...new Set(partsData.map((p) => p.category)),
-            ];
-
-            categories.forEach((category) => {
-                const button = document.createElement("button");
-                button.textContent = category;
-                button.className =
-                    "category-btn px-4 py-2 text-sm font-semibold border rounded-lg transition-colors duration-200";
-                if (category === "Todos") {
-                    button.classList.add("active");
-                }
-
-                button.addEventListener("click", () => {
-                    activeCategory = category;
-                    document
-                        .querySelectorAll(".category-btn")
-                        .forEach((btn) => btn.classList.remove("active"));
-                    button.classList.add("active");
-                    filterAndRender();
-                });
-
-                categoryFiltersContainer.appendChild(button);
-            });
-        }
-
-        searchInput.addEventListener("input", filterAndRender);
-
-        document.addEventListener("DOMContentLoaded", () => {
+    // 2. Función nueva para traer los datos
+    async function loadData() {
+        try {
+            const response = await fetch(API_URL);
+            partsData = await response.json();
+            
+            // Una vez que tenemos los datos, ejecutamos lo que antes se hacía al cargar
             createCategoryFilters();
             renderParts(partsData);
-        });
+        } catch (error) {
+            console.error("Error cargando repuestos:", error);
+            partsGrid.innerHTML = `<p class="text-center col-span-full">Error al conectar con la base de datos.</p>`;
+        }
+    }
+
+    // ... (Manten tus funciones renderParts, filterAndRender y createCategoryFilters igual) ...
+
+    // 3. Cambiamos el inicio
+    document.addEventListener("DOMContentLoaded", () => {
+        loadData(); // En lugar de renderizar directo, llamamos a la función que descarga los datos
+    });
+
     </script>
 </body>
