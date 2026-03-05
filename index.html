@@ -68,38 +68,34 @@
     </div>
 
     <script>
+        async function loadData() {
+    partsGrid.innerHTML = `<p class="col-span-full text-center py-10 text-slate-500">Conectando con la base de datos...</p>`;
+    
+    try {
+        // Añadimos redirect: "follow" para que siga la redirección de Google
+        const response = await fetch(API_URL, {
+            method: 'GET',
+            mode: 'cors',
+            redirect: 'follow'
+        });
 
-            // 1. Reemplaza la URL con la que copiaste de Google Apps Script
-    const API_URL = "https://script.google.com/macros/s/AKfycbwP4fdr2vxjRIEfh_hLh7G5h_1dA0EFQ8VbbXnildVQk1M1IdLP2HsOJv_Ei-4-7G1OYQ/exec";
-
-    let partsData = []; // Ahora empieza vacío
-    let activeCategory = "Todos";
-
-    const partsGrid = document.getElementById("parts-grid");
-    const searchInput = document.getElementById("search-input");
-    const categoryFiltersContainer = document.getElementById("category-filters");
-
-    // 2. Función nueva para traer los datos
-    async function loadData() {
-        try {
-            const response = await fetch(API_URL);
-            partsData = await response.json();
-            
-            // Una vez que tenemos los datos, ejecutamos lo que antes se hacía al cargar
-            createCategoryFilters();
-            renderParts(partsData);
-        } catch (error) {
-            console.error("Error cargando repuestos:", error);
-            partsGrid.innerHTML = `<p class="text-center col-span-full">Error al conectar con la base de datos.</p>`;
-        }
+        if (!response.ok) throw new Error('Error en red');
+        
+        partsData = await response.json();
+        
+        categoryFiltersContainer.innerHTML = "";
+        createCategoryFilters();
+        renderParts(partsData);
+    } catch (error) {
+        console.error("Error detallado:", error);
+        partsGrid.innerHTML = `
+            <div class="col-span-full text-center py-10">
+                <p class="text-red-500 font-bold">Error al conectar con la base de datos.</p>
+                <p class="text-sm text-slate-400">Verifica que el Apps Script esté como "Acceso: Cualquiera".</p>
+                <button onclick="loadData()" class="mt-4 px-4 py-2 bg-sky-600 text-white rounded-lg">Reintentar</button>
+            </div>`;
     }
-
-    // ... (Manten tus funciones renderParts, filterAndRender y createCategoryFilters igual) ...
-
-    // 3. Cambiamos el inicio
-    document.addEventListener("DOMContentLoaded", () => {
-        loadData(); // En lugar de renderizar directo, llamamos a la función que descarga los datos
-    });
+}
 
     </script>
 </body>
